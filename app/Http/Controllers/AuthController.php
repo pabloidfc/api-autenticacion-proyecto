@@ -14,8 +14,8 @@ class AuthController extends Controller
     public function Register(Request $req){
 
         $validacion = Validator::make($req -> all(),[
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users',
+            'name'     => 'required|max:255',
+            'email'    => 'required|email|unique:users',
             'password' => 'required|confirmed'
         ]);
 
@@ -23,7 +23,6 @@ class AuthController extends Controller
             return $validacion -> errors();
 
         return $this -> createUser($req);
-        
     }
 
     private function createUser($req){
@@ -41,6 +40,6 @@ class AuthController extends Controller
 
     public function EliminarToken(Request $req){
         $req -> user() -> token() -> revoke();
-        return ['msg' => 'Token Revoked'];
+        return response(['msg' => 'Token Revoked'], 200);
     }
 }

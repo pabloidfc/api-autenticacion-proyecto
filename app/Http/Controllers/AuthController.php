@@ -11,35 +11,47 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    public function works() {
+        return response("FUNCIONA!!!", 200);
+    }
+
     public function Register(Request $req){
 
         $validacion = Validator::make($req -> all(),[
-            'name'     => 'required|max:255',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required|confirmed'
+            "ci"        => "required|string|max:8",
+            "nombre"    => "required|alpha|max:40",
+            "nombre2"   => "nullable|alpha|max:40",
+            "apellido"  => "required|alpha|max:40",
+            "apellido2" => "required|alpha|max:40",
+            "email"     => "required|email|unique:users",
+            "password"  => "required|confirmed"
         ]);
 
         if($validacion -> fails())
-            return $validacion -> errors();
+            return response($validacion -> errors(), 400);
 
         return $this -> createUser($req);
     }
 
     private function createUser($req){
         $user = new User();
-        $user -> name     = $req -> post("name");
-        $user -> email    = $req -> post("email");
-        $user -> password = Hash::make($req -> post("password"));   
+        $user -> ci        = $req -> input("ci");
+        $user -> nombre    = $req -> input("nombre");
+        $user -> nombre2   = $req -> input("nombre2");
+        $user -> apellido  = $req -> input("apellido");
+        $user -> apellido2 = $req -> input("apellido2");
+        $user -> email     = $req -> input("email");
+        $user -> password = Hash::make($req -> input("password"));   
         $user -> save();
         return $user;
     }
 
     public function ValidarToken(Request $req){
-        return auth('api') -> user();
+        return auth("api") -> user();
     }
 
     public function EliminarToken(Request $req){
         $req -> user() -> token() -> revoke();
-        return response(['msg' => 'Token Revoked'], 200);
+        return response(["msg" => "Token Revoked"], 200);
     }
 }

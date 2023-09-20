@@ -15,10 +15,8 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// ! Client Secret  x2RMzn25g7ypL2lanKmPii9tKk95E4a9XXLoZRfF
-
 Route::get('/', function () {
-    return response("No tienes permisos", 401);
+    return response()->json(["msg" => "No tienes permisos!!!"], 401);
 }) -> name("unauthorized");
 
 Route::post("/register", [AuthController::class, "Register"]);

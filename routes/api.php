@@ -19,7 +19,6 @@ Route::get('/', function () {
     return response()->json(["msg" => "No tienes permisos!!!"], 401);
 }) -> name("unauthorized");
 
-Route::post("/register", [AuthController::class, "Register"]);
-Route::get("/test", [AuthController::class, "works"])  -> middleware("auth:api");
+Route::post("/register", [AuthController::class, "Register"])     -> name("register");
 Route::get("/validate", [AuthController::class, "ValidarToken"])  -> middleware("auth:api");
 Route::get("/logout",   [AuthController::class, "EliminarToken"]) -> middleware("auth:api");

@@ -18,5 +18,9 @@ class DatabaseSeeder extends Seeder
             "nombre" => "admin",
             "email"  => "admin@admin.com"
         ]);
+
+        \App\Models\Administrador::factory(1)->create();
+        \App\Models\Ubicacion::factory(1)->create();
+        \App\Models\Telefono::factory(1)->create();
     }
 }

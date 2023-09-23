@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -9,15 +10,15 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/', function () {
+    return response()->json(["msg" => "No tienes permisos!!!"], 401);
+}) -> name("unauthorized");
 
-Route::post('/user',[UserController::class,"CrearToken"]);
-Route::get('/validate',[UserController::class,"ValidarToken"])->middleware('auth:api');
-Route::get('/logout',[UserController::class,"EliminarToken"])->middleware('auth:api');
+Route::post("/register", [AuthController::class, "Register"])     -> name("register");
+Route::get("/validate", [AuthController::class, "ValidarToken"])  -> middleware("auth:api");
+Route::get("/logout",   [AuthController::class, "EliminarToken"]) -> middleware("auth:api");
